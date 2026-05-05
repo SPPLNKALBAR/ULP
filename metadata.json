@@ -1,0 +1,5 @@
+{
+  "name": "Remix: Kinerja Teknik ULP Sekura",
+  "description": "Aplikasi monitoring dan pelaporan kinerja teknik untuk ULP Sekura, mencakup metrik SAIDI, SAIFI, dan keandalan jaringan.",
+  "requestFramePermissions": []
+}
