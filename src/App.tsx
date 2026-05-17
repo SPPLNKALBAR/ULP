@@ -71,7 +71,7 @@ export default function App() {
   const [showLanding, setShowLanding] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<string | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPemeliharaanOpen, setIsPemeliharaanOpen] = useState(false);
   const [isLaporanOpen, setIsLaporanOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -256,7 +256,7 @@ export default function App() {
 
   return (
     <div 
-      className="flex h-screen bg-cover bg-center bg-no-repeat transition-colors duration-300 overflow-hidden"
+      className="flex flex-col h-screen bg-cover bg-center bg-no-repeat transition-colors duration-300 overflow-hidden"
     >
       {/* Welcome Popup */}
       {showWelcomePopup && user && (
@@ -273,153 +273,69 @@ export default function App() {
         </div>
       )}
 
-      {/* Sidebar */}
-      <aside className={cn(
-        "bg-white/20 dark:bg-black/60 backdrop-blur-2xl text-white transition-all duration-300 flex flex-col border-r border-white/20 dark:border-white/10",
-        isSidebarOpen ? "w-64" : "w-20"
-      )}>
-        <div className="p-6 flex items-center gap-3">
-          <div className="w-12 h-12 flex items-center justify-center shrink-0">
-            <img 
-              src="https://lh3.googleusercontent.com/d/17BnbLgrF0_nttIg_Ey2huvRSiFVIHAQS" 
-              alt="Logo ULP Sekura"
-              className="w-full h-full object-contain drop-shadow-sm"
-              referrerPolicy="no-referrer"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = "https://picsum.photos/seed/pln-logo/100/100";
-              }}
-            />
-          </div>
-          {isSidebarOpen && (
-            <div className="overflow-hidden whitespace-nowrap">
-              <h1 className="font-black text-sm tracking-tight uppercase leading-tight text-white drop-shadow-md">ULP SEKURA</h1>
-              <p className="text-[10px] text-zinc-200 uppercase tracking-widest leading-tight mt-0.5 font-bold drop-shadow-sm">Kinerja Teknik</p>
+      {/* Top Navbar */}
+      <header className="bg-white/20 dark:bg-black/40 backdrop-blur-xl border-b border-white/20 dark:border-white/10 sticky top-0 z-40 transition-colors shadow-sm flex flex-col">
+        {/* Layer 1: Top Bar */}
+        <div className="px-4 xl:px-8 flex items-center justify-between h-16 border-b border-white/10 dark:border-white/5">
+          <div className="flex items-center gap-3 mr-4 lg:mr-8 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
+            <div className="w-10 h-10 flex items-center justify-center shrink-0">
+              <img 
+                src="https://lh3.googleusercontent.com/d/17BnbLgrF0_nttIg_Ey2huvRSiFVIHAQS" 
+                alt="Logo ULP Sekura"
+                className="w-full h-full object-contain drop-shadow-sm"
+                referrerPolicy="no-referrer"
+              />
             </div>
-          )}
-        </div>
-
-        <nav className="flex-1 px-3 space-y-1">
-          {navItems.map((item) => (
-            <div key={item.id}>
-              <button
-                onClick={() => {
-                  if (item.subItems) {
-                    if (item.id === 'pemeliharaan') setIsPemeliharaanOpen(!isPemeliharaanOpen);
-                    if (item.id === 'reports') setIsLaporanOpen(!isLaporanOpen);
-                    if (!isSidebarOpen) setIsSidebarOpen(true);
-                  } else {
-                    setActiveTab(item.id);
-                  }
-                }}
-                className={cn(
-                  "w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all duration-200 group shadow-sm",
-                  (activeTab === item.id || (item.subItems && item.subItems.some(sub => sub.id === activeTab)))
-                    ? "bg-amber-500 text-zinc-950 font-black shadow-amber-500/20" 
-                    : "text-zinc-100 hover:bg-white/10 hover:text-white"
-                )}
-              >
-                <div className="flex items-center gap-3">
-                  <item.icon className="w-5 h-5 shrink-0" />
-                  {isSidebarOpen && <span className="text-sm font-bold drop-shadow-sm">{item.label}</span>}
-                </div>
-                {item.subItems && isSidebarOpen && (
-                  <ChevronDown className={cn("w-4 h-4 transition-transform text-zinc-300 group-hover:text-white", (activeTab === item.id || (item.subItems && item.subItems.some(sub => sub.id === activeTab))) && "text-zinc-950 group-hover:text-zinc-950", (item.id === 'pemeliharaan' ? isPemeliharaanOpen : isLaporanOpen) && "rotate-180")} />
-                )}
-              </button>
-              
-              {item.subItems && (item.id === 'pemeliharaan' ? isPemeliharaanOpen : isLaporanOpen) && isSidebarOpen && (
-                <div className="mt-1 ml-4 pl-4 border-l-2 border-white/10 space-y-1">
-                  {item.subItems.map(subItem => (
-                    <button
-                      key={subItem.id}
-                      onClick={() => setActiveTab(subItem.id)}
-                      className={cn(
-                        "w-full flex items-center px-3 py-2 rounded-lg transition-all text-sm font-bold drop-shadow-sm",
-                        activeTab === subItem.id
-                          ? "bg-amber-500 text-zinc-950"
-                          : "text-zinc-200 hover:bg-white/10 hover:text-white"
-                      )}
-                    >
-                      {subItem.label}
-                    </button>
-                  ))}
-                </div>
-              )}
+            <div className="hidden sm:block">
+              <h1 className="font-black text-sm tracking-tight uppercase leading-tight text-zinc-900 dark:text-white drop-shadow-md">ULP SEKURA</h1>
+              <p className="text-[10px] text-zinc-700 dark:text-zinc-300 uppercase tracking-widest leading-tight mt-0.5 font-bold drop-shadow-sm">Kinerja Teknik</p>
             </div>
-          ))}
-        </nav>
-
-        <div className="p-4 border-t border-white/10 space-y-1">
-          <button 
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="w-full flex items-center gap-3 px-3 py-2.5 text-zinc-100 hover:text-white hover:bg-white/5 rounded-xl transition-all font-bold drop-shadow-sm"
-          >
-            {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            {isSidebarOpen && <span className="text-sm">Tutup Menu</span>}
-          </button>
-          
-          <button 
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 text-rose-400 hover:bg-rose-500/20 hover:text-rose-300 rounded-xl transition-all font-bold drop-shadow-sm"
-          >
-            <LogOut className="w-5 h-5 shrink-0" />
-            {isSidebarOpen && <span className="text-sm">Keluar</span>}
-          </button>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-transparent relative">
-        <header className="h-16 bg-white/10 dark:bg-black/20 backdrop-blur-md border-b border-white/10 dark:border-white/5 flex items-center justify-between px-8 sticky top-0 z-10 transition-colors">
-          <div className="flex items-center gap-4">
-            <h2 className="text-lg font-bold text-zinc-900 dark:text-white drop-shadow-sm">
-              {navItems.find(i => i.id === activeTab)?.label || 
-               navItems.flatMap(i => i.subItems || []).find(sub => sub.id === activeTab)?.label}
-            </h2>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3">
+
+          <div className="flex items-center gap-3 sm:gap-6 ml-auto">
+            {/* Clock & Refresh */}
+            <div className="hidden sm:flex items-center gap-3">
               <div className="text-right">
                 <p className="text-sm font-black text-zinc-900 dark:text-white tabular-nums drop-shadow-sm">
                   {currentTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                 </p>
-                <p className="text-[10px] text-zinc-800 dark:text-zinc-200 uppercase tracking-wider font-black drop-shadow-sm">
+                <p className="text-[10px] text-zinc-700 dark:text-zinc-300 uppercase tracking-wider font-black drop-shadow-sm">
                   {currentTime.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })}
                 </p>
               </div>
               <button 
                 onClick={loadData}
                 disabled={isLoading}
-                className="flex flex-col items-center justify-center gap-0.5 px-2 py-1 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg transition-colors text-zinc-500 hover:text-amber-500 dark:text-zinc-400 dark:hover:text-amber-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex flex-col items-center justify-center gap-0.5 px-2 py-1 hover:bg-white/50 dark:hover:bg-zinc-800/50 rounded-lg transition-colors text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 disabled:opacity-50 disabled:cursor-not-allowed"
                 title="Refresh Data"
               >
                 <RefreshCw className={cn("w-4 h-4", isLoading && "animate-spin")} />
-                <span className="text-[9px] font-black uppercase tracking-wider text-zinc-800 dark:text-zinc-200 drop-shadow-sm">Refresh</span>
+                <span className="text-[9px] font-black uppercase tracking-wider">Refresh</span>
               </button>
             </div>
             
-            <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800" />
+            <div className="hidden sm:block h-8 w-px bg-zinc-300 dark:bg-zinc-700" />
 
-            <CuacaWidget />
+            <div className="hidden md:block">
+              <CuacaWidget small />
+            </div>
 
-            <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800" />
+            <div className="hidden md:block h-8 w-px bg-zinc-300 dark:bg-zinc-700" />
 
+            {/* Profile Dropdown */}
             <div className="relative">
               <button 
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center gap-3 hover:bg-zinc-50 dark:hover:bg-zinc-800 p-1.5 rounded-xl transition-colors group"
+                className="flex items-center gap-2 hover:bg-white/50 dark:hover:bg-zinc-800/50 p-1.5 rounded-xl transition-colors group"
               >
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-700 dark:text-amber-400 font-bold text-xs border border-amber-200 dark:border-amber-800 uppercase group-hover:bg-amber-200 dark:group-hover:bg-amber-800 transition-colors">
-                    {user?.charAt(0)}
-                  </div>
-                  <div className="hidden sm:block text-left">
-                    <p className="text-[10px] text-zinc-700 dark:text-zinc-300 font-black uppercase tracking-wider leading-none drop-shadow-sm">Petugas</p>
-                    <div className="flex items-center gap-1">
-                      <p className="text-xs font-black text-zinc-900 dark:text-white leading-tight drop-shadow-sm">{user}</p>
-                      <ChevronDown className={cn("w-3 h-3 text-zinc-700 dark:text-zinc-300 transition-transform", isProfileOpen && "rotate-180")} />
-                    </div>
+                <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-700 dark:text-amber-400 font-bold text-xs border border-amber-200 dark:border-amber-800 uppercase group-hover:bg-amber-200 dark:group-hover:bg-amber-800 transition-colors">
+                  {user?.charAt(0)}
+                </div>
+                <div className="hidden md:block text-left">
+                  <p className="text-[10px] text-zinc-600 dark:text-zinc-400 font-black uppercase tracking-wider leading-none drop-shadow-sm">Petugas</p>
+                  <div className="flex items-center gap-1">
+                    <p className="text-xs font-black text-zinc-900 dark:text-white leading-tight drop-shadow-sm">{user}</p>
+                    <ChevronDown className={cn("w-3 h-3 text-zinc-600 dark:text-zinc-400 transition-transform", isProfileOpen && "rotate-180")} />
                   </div>
                 </div>
               </button>
@@ -427,20 +343,20 @@ export default function App() {
               {isProfileOpen && (
                 <>
                   <div 
-                    className="fixed inset-0 z-10" 
+                    className="fixed inset-0 z-40" 
                     onClick={() => setIsProfileOpen(false)} 
                   />
-                  <div className="absolute right-0 mt-2 w-48 bg-white/90 dark:bg-black/80 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 dark:border-white/10 py-1 z-20 animate-in fade-in slide-in-from-top-2 duration-200">
-                    <div className="px-4 py-2 border-b border-black/5 dark:border-white/5">
-                      <p className="text-[10px] text-zinc-700 dark:text-zinc-300 font-black uppercase tracking-wider drop-shadow-sm">Sesi Aktif</p>
-                      <p className="text-xs font-black text-zinc-900 dark:text-white drop-shadow-sm">{user}</p>
+                  <div className="absolute right-0 mt-2 w-48 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl rounded-xl shadow-2xl border border-zinc-200 dark:border-zinc-800 py-1 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="px-4 py-2 border-b border-zinc-100 dark:border-zinc-800">
+                      <p className="text-[10px] text-zinc-500 font-black uppercase tracking-wider">Sesi Aktif</p>
+                      <p className="text-xs font-black text-zinc-900 dark:text-white">{user}</p>
                     </div>
                     <button
                       onClick={() => {
                         handleLogout();
                         setIsProfileOpen(false);
                       }}
-                      className="w-full flex items-center gap-2 px-4 py-2.5 text-sm font-black text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-colors text-left drop-shadow-sm"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 text-sm font-black text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors text-left"
                     >
                       <LogOut className="w-4 h-4" />
                       Keluar
@@ -449,10 +365,196 @@ export default function App() {
                 </>
               )}
             </div>
-          </div>
-        </header>
 
-        <div className="p-8 max-w-7xl mx-auto space-y-8">
+            {/* Mobile Menu Toggle */}
+            <button 
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="lg:hidden p-2 text-zinc-700 dark:text-zinc-200 hover:bg-white/50 dark:hover:bg-zinc-800/50 rounded-lg transition-colors"
+            >
+              {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Layer 2: Desktop Navigation */}
+        <div className="hidden lg:flex px-2 xl:px-4 py-1.5 w-full justify-center">
+          {(isPemeliharaanOpen || isLaporanOpen) && (
+            <div 
+              className="fixed inset-0 z-30" 
+              onClick={() => {
+                setIsPemeliharaanOpen(false);
+                setIsLaporanOpen(false);
+              }}
+            />
+          )}
+          <nav className="flex items-center gap-1 xl:gap-2 flex-wrap justify-center relative z-40 w-full">
+            {navItems.map((item) => {
+              const isActive = activeTab === item.id || (item.subItems && item.subItems.some(sub => sub.id === activeTab));
+              return (
+                <div key={item.id} className="relative group shrink-0">
+                  <button
+                    onClick={() => {
+                      if (item.subItems) {
+                        if (item.id === 'pemeliharaan') {
+                          setIsPemeliharaanOpen(!isPemeliharaanOpen);
+                          setIsLaporanOpen(false);
+                        }
+                        if (item.id === 'reports') {
+                          setIsLaporanOpen(!isLaporanOpen);
+                          setIsPemeliharaanOpen(false);
+                        }
+                      } else {
+                        setActiveTab(item.id);
+                        setIsPemeliharaanOpen(false);
+                        setIsLaporanOpen(false);
+                      }
+                    }}
+                    className={cn(
+                      "flex items-center gap-1.5 xl:gap-2 px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-xl transition-all duration-200 text-xs xl:text-sm font-bold whitespace-nowrap",
+                       isActive
+                        ? "bg-amber-500 text-zinc-950 shadow-amber-500/20" 
+                        : "text-zinc-700 dark:text-zinc-200 hover:bg-white/30 dark:hover:bg-white/10"
+                    )}
+                  >
+                    <item.icon className="w-3.5 xl:w-4 h-3.5 xl:h-4 shrink-0" />
+                    <span className="tracking-tight">{item.label}</span>
+                    {item.subItems && (
+                      <ChevronDown className={cn("w-3.5 h-3.5 transition-transform opacity-70", (item.id === 'pemeliharaan' ? isPemeliharaanOpen : isLaporanOpen) && "rotate-180")} />
+                    )}
+                  </button>
+
+                  {/* Desktop Dropdown */}
+                  {item.subItems && (
+                    <div className={cn(
+                      "absolute top-full left-1/2 -translate-x-1/2 mt-1 w-48 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl py-2 z-50",
+                      (item.id === 'pemeliharaan' && isPemeliharaanOpen) || (item.id === 'reports' && isLaporanOpen) 
+                        ? "block" 
+                        : "hidden"
+                    )}>
+                      {item.subItems.map(subItem => (
+                        <button
+                          key={subItem.id}
+                          onClick={() => {
+                            setActiveTab(subItem.id);
+                            setIsPemeliharaanOpen(false);
+                            setIsLaporanOpen(false);
+                          }}
+                          className={cn(
+                            "w-full text-left px-4 py-2 text-sm font-bold transition-colors",
+                            activeTab === subItem.id
+                              ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                              : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                          )}
+                        >
+                          {subItem.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Mobile Navigation Dropdown */}
+        <AnimatePresence>
+          {isSidebarOpen && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="lg:hidden block border-t border-white/20 dark:border-white/10 overflow-hidden bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl absolute w-full z-40 shadow-xl"
+            >
+              <div className="px-4 py-3 space-y-1 max-h-[70vh] overflow-y-auto">
+                {navItems.map((item) => (
+                  <div key={item.id}>
+                    <button
+                      onClick={() => {
+                        if (item.subItems) {
+                          if (item.id === 'pemeliharaan') {
+                            setIsPemeliharaanOpen(!isPemeliharaanOpen);
+                            setIsLaporanOpen(false);
+                          }
+                          if (item.id === 'reports') {
+                            setIsLaporanOpen(!isLaporanOpen);
+                            setIsPemeliharaanOpen(false);
+                          }
+                        } else {
+                          setActiveTab(item.id);
+                          setIsSidebarOpen(false);
+                          setIsPemeliharaanOpen(false);
+                          setIsLaporanOpen(false);
+                        }
+                      }}
+                      className={cn(
+                        "w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all text-sm font-bold",
+                        (activeTab === item.id || (item.subItems && item.subItems.some(sub => sub.id === activeTab)))
+                          ? "bg-amber-500 text-zinc-950" 
+                          : "text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <item.icon className="w-5 h-5" />
+                        <span>{item.label}</span>
+                      </div>
+                      {item.subItems && (
+                        <ChevronDown className={cn("w-4 h-4 transition-transform", (item.id === 'pemeliharaan' ? isPemeliharaanOpen : isLaporanOpen) && "rotate-180")} />
+                      )}
+                    </button>
+                    
+                    {/* Mobile Submenu items */}
+                    {item.subItems && (item.id === 'pemeliharaan' ? isPemeliharaanOpen : isLaporanOpen) && (
+                      <div className="mt-1 ml-5 border-l-2 border-zinc-200 dark:border-zinc-800 pl-3 space-y-1">
+                        {item.subItems.map(subItem => (
+                          <button
+                            key={subItem.id}
+                            onClick={() => {
+                              setActiveTab(subItem.id);
+                              setIsSidebarOpen(false);
+                              setIsPemeliharaanOpen(false);
+                              setIsLaporanOpen(false);
+                            }}
+                            className={cn(
+                              "w-full flex items-center px-4 py-2.5 rounded-lg transition-all text-sm font-bold",
+                              activeTab === subItem.id
+                                ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                                : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                            )}
+                          >
+                            {subItem.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                
+                <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={loadData}
+                      disabled={isLoading}
+                      className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-zinc-700 dark:text-zinc-300"
+                    >
+                      <RefreshCw className={cn("w-5 h-5", isLoading && "animate-spin")} />
+                    </button>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-black text-zinc-900 dark:text-white tabular-nums">
+                      {currentTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1 overflow-y-auto bg-transparent relative">
+        <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-8 pb-20">
           {error && (
             <div className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-900/30 text-rose-700 dark:text-rose-400 px-4 py-3 rounded-xl flex items-center gap-3">
               <AlertTriangle className="w-5 h-5" />

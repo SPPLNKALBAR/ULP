@@ -140,7 +140,7 @@ export function RealisasiROW() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Chart Section */}
-        <Card title="Grafik Realisasi vs Target" className="p-0" bodyClassName="p-6">
+        <Card title="Grafik Realisasi vs Target" className="p-0 lg:col-span-2" bodyClassName="p-6">
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={chartData}>
@@ -185,17 +185,17 @@ export function RealisasiROW() {
               </select>
             </div>
           }
-          className="p-0" 
-          bodyClassName="p-0"
+          className="p-0 flex flex-col h-full" 
+          bodyClassName="p-0 flex flex-col flex-1 min-h-0"
         >
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-zinc-50/50 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800">
-                  <th className="px-3 py-2 text-[9px] font-black text-zinc-400 uppercase tracking-widest">
+          <div className="overflow-x-auto flex-1 overflow-y-auto max-h-[300px]">
+            <table className="min-w-full text-left border-collapse table-fixed">
+              <thead className="sticky top-0 z-10">
+                <tr className="bg-zinc-50/50 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800 backdrop-blur-md">
+                  <th className="w-[60%] px-3 py-2 text-[9px] font-black text-zinc-400 uppercase tracking-widest">
                     URAIAN POINT
                   </th>
-                  <th className="px-3 py-2 text-[9px] font-black text-zinc-400 uppercase tracking-widest text-center">
+                  <th className="w-[40%] px-3 py-2 text-[9px] font-black text-zinc-400 uppercase tracking-widest text-center">
                     NILAI ({selectedMonth})
                   </th>
                 </tr>
@@ -285,13 +285,13 @@ export function RealisasiROW() {
               </select>
             </div>
           }
-          className="p-0" 
-          bodyClassName="p-0"
+          className="p-0 flex flex-col h-full" 
+          bodyClassName="p-0 flex flex-col flex-1 min-h-0"
         >
-          <div className="overflow-x-auto max-h-[300px]">
+          <div className="overflow-x-auto flex-1 overflow-y-auto max-h-[300px]">
             <table className="min-w-full text-left border-collapse table-fixed">
               <thead className="sticky top-0 z-10">
-                <tr className="bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
+                <tr className="bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 backdrop-blur-md">
                   <th className="w-[40%] px-3 py-2 text-[9px] font-black text-zinc-400 uppercase tracking-widest">
                     TIM
                   </th>
