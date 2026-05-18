@@ -18,7 +18,7 @@ const MONITORING_BULAN_URL = 'https://docs.google.com/spreadsheets/d/1IfBQSLlqnJ
 
 const DATA_GARDU_URL = 'https://docs.google.com/spreadsheets/d/1IfBQSLlqnJsf2DulM0kw-yTA6zr6Sum75mQOZpGUAJM/export?format=csv&gid=1613566233';
 const PLTD_TEMAJUK_URL = 'https://docs.google.com/spreadsheets/d/1IfBQSLlqnJsf2DulM0kw-yTA6zr6Sum75mQOZpGUAJM/export?format=csv&gid=794679260';
-const PEMELIHARAAN_ROW_URL = 'https://docs.google.com/spreadsheets/d/1IfBQSLlqnJsf2DulM0kw-yTA6zr6Sum75mQOZpGUAJM/export?format=csv&gid=148485072';
+const PEMELIHARAAN_ROW_URL = 'https://docs.google.com/spreadsheets/d/1IfBQSLlqnJsf2DulM0kw-yTA6zr6Sum75mQOZpGUAJM/export?format=csv&gid=148485072&range=A:Q';
 const OLD_PEMELIHARAAN_ROW_URL = 'https://docs.google.com/spreadsheets/d/1nAFEkg1KZ4SU4o0pk7KqMHH2Lz4QA_lqj8IBWCZdyGQ/export?format=csv&gid=277536493';
 const REALISASI_ROW_2026_URL = 'https://docs.google.com/spreadsheets/d/1nAFEkg1KZ4SU4o0pk7KqMHH2Lz4QA_lqj8IBWCZdyGQ/export?format=csv&gid=1451420501';
 
@@ -96,7 +96,7 @@ export async function fetchPemeliharaanRowData(): Promise<FgtmRow[]> {
             return data;
           };
 
-          const data = extractRange(11, 87, 15, 30); // P12:AE88
+          const data = extractRange(0, 1000, 0, 16); // A:Q
           resolve(data);
         },
         error: (error: any) => reject(error)
